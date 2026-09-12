@@ -32,3 +32,11 @@ Thumbs.db
 *.onnx
 *.glb
 *.gltf
+
+# Computer Vision / PyTorch Weights
+*.pt
+*.pth
+*.onnx
+*.engine
+perception-engine/models/*
+!perception-engine/models/.gitkeep
