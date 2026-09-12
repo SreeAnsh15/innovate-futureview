@@ -1,0 +1,90 @@
+{
+  "venue_id": "hospital_lobby_01",
+  "name": "General Hospital Central Lobby",
+  "dimensions": {
+    "width": 20.0,
+    "depth": 15.0,
+    "height": 3.5,
+    "unit": "meters"
+  },
+  "grid_resolution": 0.5,
+  "service_points": [
+    {
+      "id": "desk_registration",
+      "name": "Main Registration & Triage Counter",
+      "type": "counter",
+      "position": { "x": 10.0, "y": 0.0, "z": 6.0 },
+      "dimensions": { "width": 4.0, "height": 1.1, "depth": 1.0 },
+      "rotation_y": 0.0,
+      "walkable": false,
+      "service_capacity": 3,
+      "is_movable": true
+    },
+    {
+      "id": "pharmacy_pickup",
+      "name": "Pharmacy Dispensation Window",
+      "type": "service_point",
+      "position": { "x": 18.0, "y": 0.0, "z": 12.0 },
+      "dimensions": { "width": 2.5, "height": 1.1, "depth": 0.8 },
+      "rotation_y": 90.0,
+      "walkable": false,
+      "service_capacity": 2,
+      "is_movable": false
+    }
+  ],
+  "access_points": [
+    {
+      "id": "door_main_entrance",
+      "type": "entrance",
+      "position": { "x": 10.0, "y": 0.0, "z": 0.5 },
+      "width": 3.0,
+      "flow_rate_per_min": 25
+    },
+    {
+      "id": "door_emergency_exit",
+      "type": "emergency_exit",
+      "position": { "x": 0.5, "y": 0.0, "z": 7.5 },
+      "width": 2.0,
+      "flow_rate_per_min": 40
+    },
+    {
+      "id": "door_inpatient_corridor",
+      "type": "exit",
+      "position": { "x": 10.0, "y": 0.0, "z": 14.5 },
+      "width": 2.5,
+      "flow_rate_per_min": 15
+    }
+  ],
+  "obstacles": [
+    {
+      "id": "seating_zone_left",
+      "name": "Waiting Area Chairs Left",
+      "type": "furniture_cluster",
+      "position": { "x": 4.5, "y": 0.0, "z": 4.5 },
+      "dimensions": { "width": 3.0, "height": 0.8, "depth": 2.5 },
+      "walkable": false
+    },
+    {
+      "id": "seating_zone_right",
+      "name": "Waiting Area Chairs Right",
+      "type": "furniture_cluster",
+      "position": { "x": 15.5, "y": 0.0, "z": 4.5 },
+      "dimensions": { "width": 3.0, "height": 0.8, "depth": 2.5 },
+      "walkable": false
+    },
+    {
+      "id": "pillar_central_left",
+      "name": "Structural Column",
+      "type": "pillar",
+      "position": { "x": 6.0, "y": 0.0, "z": 10.0 },
+      "dimensions": { "width": 0.8, "height": 3.5, "depth": 0.8 },
+      "walkable": false
+    }
+  ],
+  "default_decision_weights": {
+    "emergency_safety": 0.30,
+    "accessibility": 0.30,
+    "congestion": 0.20,
+    "walking_distance": 0.20
+  }
+}
