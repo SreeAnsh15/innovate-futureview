@@ -153,9 +153,16 @@ def find_path(
     return PathResult(persona=persona, distance_m=distance, time_s=time_s, path=path)
 
 
-def run_all_personas() -> list[PathResult]:
-    occupancy = load_baseline()
-    return [find_path(name, occupancy=occupancy) for name in PERSONAS]
+def run_all_personas(
+    occupancy: OccupancyGrid | None = None,
+    start_id: str = "door_main_entrance",
+    goal_id: str = "desk_registration",
+) -> list[PathResult]:
+    occupancy = occupancy or load_baseline()
+    return [
+        find_path(name, start_id=start_id, goal_id=goal_id, occupancy=occupancy)
+        for name in PERSONAS
+    ]
 
 
 def _print_result(result: PathResult) -> None:
