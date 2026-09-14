@@ -33,6 +33,7 @@ export function SplitScreenComparison({
 
   const res = simulationResult;
   const metrics = res?.metrics;
+  const corridorCompromised = propPos.x > 60 || propPos.y > 60;
 
   // Dual continuous simulation animation loop
   useEffect(() => {
@@ -104,10 +105,17 @@ export function SplitScreenComparison({
 
           <div className="splitCanvasFrame">
             <svg className="splitSvg" viewBox="0 0 100 80">
+              <defs>
+                <pattern id="baselineCadGrid" width="5" height="5" patternUnits="userSpaceOnUse">
+                  <path d="M 5 0 L 0 0 0 5" fill="none" stroke="#1E293B" strokeWidth="0.25" />
+                </pattern>
+              </defs>
+              <rect width="100" height="80" fill="url(#baselineCadGrid)" />
               {/* Zones */}
-              <rect x="5" y="28" width="25" height="24" fill="rgba(80, 221, 255, 0.06)" stroke="rgba(80, 221, 255, 0.2)" rx="2" />
-              <rect x="58" y="12" width="28" height="22" fill="rgba(255, 199, 101, 0.06)" stroke="rgba(255, 199, 101, 0.2)" rx="2" />
-              <rect x="58" y="48" width="28" height="22" fill="rgba(255, 100, 123, 0.06)" stroke="rgba(255, 100, 123, 0.2)" rx="2" />
+              <rect x="5" y="28" width="25" height="24" fill="rgba(2, 132, 199, 0.2)" stroke="#0284C7" strokeWidth="1.5" />
+              <rect x="58" y="12" width="28" height="22" fill="rgba(16, 185, 129, 0.15)" stroke="#10B981" strokeWidth="1.5" />
+              <rect x="58" y="48" width="28" height="22" fill="rgba(244, 63, 94, 0.2)" stroke="#F43F5E" strokeWidth="1.5" />
+              <path d="M30 40 H35 M58 23 H53 M58 59 H53" stroke="#02060b" strokeWidth="3" />
 
               {/* Baseline Path */}
               <path
@@ -139,6 +147,7 @@ export function SplitScreenComparison({
               <circle cx={10 + (basePos.x - 10) * progress} cy={40 + (basePos.y - 40) * progress} r="1.8" fill="#50ddff" stroke="#ffffff" strokeWidth="0.6" />
               <circle cx={basePos.x + (68 - basePos.x) * progress} cy={basePos.y + (22 - basePos.y) * progress} r="1.8" fill="#ffc765" stroke="#ffffff" strokeWidth="0.6" />
               <circle cx={68 + (92 - 68) * progress} cy={22 + (57 - 22) * progress} r="1.8" fill="#a78bfa" stroke="#ffffff" strokeWidth="0.6" />
+              <text x="84" y="75" fill="#CBD5E1" fontSize="2.8" fontWeight="bold" textAnchor="middle">|— 5m —|</text>
             </svg>
 
             <div className="paneLiveStats">
@@ -161,10 +170,21 @@ export function SplitScreenComparison({
 
           <div className="splitCanvasFrame">
             <svg className="splitSvg" viewBox="0 0 100 80">
+              <defs>
+                <pattern id="proposedCadGrid" width="5" height="5" patternUnits="userSpaceOnUse">
+                  <path d="M 5 0 L 0 0 0 5" fill="none" stroke="#1E293B" strokeWidth="0.25" />
+                </pattern>
+                <filter id="egressWarningGlow" x="-30%" y="-30%" width="160%" height="160%">
+                  <feGaussianBlur stdDeviation="1.2" result="blur" />
+                  <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                </filter>
+              </defs>
+              <rect width="100" height="80" fill="url(#proposedCadGrid)" />
               {/* Zones */}
-              <rect x="5" y="28" width="25" height="24" fill="rgba(80, 221, 255, 0.06)" stroke="rgba(80, 221, 255, 0.2)" rx="2" />
-              <rect x="58" y="12" width="28" height="22" fill="rgba(255, 199, 101, 0.06)" stroke="rgba(255, 199, 101, 0.2)" rx="2" />
-              <rect x="58" y="48" width="28" height="22" fill="rgba(255, 100, 123, 0.06)" stroke="rgba(255, 100, 123, 0.2)" rx="2" />
+              <rect x="5" y="28" width="25" height="24" fill="rgba(2, 132, 199, 0.2)" stroke="#0284C7" strokeWidth="1.5" />
+              <rect x="58" y="12" width="28" height="22" fill="rgba(16, 185, 129, 0.15)" stroke="#10B981" strokeWidth="1.5" />
+              <rect x="58" y="48" width="28" height="22" fill="rgba(244, 63, 94, 0.2)" stroke="#EF4444" strokeWidth="1.5" className={corridorCompromised ? "pulseSlow" : ""} filter={corridorCompromised ? "url(#egressWarningGlow)" : undefined} />
+              <path d="M30 40 H35 M58 23 H53 M58 59 H53" stroke="#02060b" strokeWidth="3" />
 
               {/* Proposed Rerouted Path */}
               <path
@@ -197,7 +217,13 @@ export function SplitScreenComparison({
               <circle cx={10 + (propPos.x - 10) * progress} cy={40 + (propPos.y - 40) * progress} r="1.8" fill="#50ddff" stroke="#ffffff" strokeWidth="0.6" />
               <circle cx={propPos.x + (68 - propPos.x) * progress} cy={propPos.y + (22 - propPos.y) * progress} r="1.8" fill="#ffc765" stroke="#ffffff" strokeWidth="0.6" />
               <circle cx={68 + (92 - 68) * progress} cy={22 + (57 - 22) * progress} r="1.8" fill="#a78bfa" stroke="#ffffff" strokeWidth="0.6" />
+              <text x="84" y="75" fill="#CBD5E1" fontSize="2.8" fontWeight="bold" textAnchor="middle">|— 5m —|</text>
             </svg>
+            {corridorCompromised && (
+              <div style={{ position: "absolute", top: 12, right: 12, zIndex: 2, padding: "7px 10px", color: "#FCA5A5", background: "rgba(69, 10, 10, 0.94)", border: "1px solid #EF4444", boxShadow: "0 0 16px rgba(239, 68, 68, 0.5)", fontFamily: "var(--font-mono)", fontSize: 10, fontWeight: 800 }}>
+                Corridor Clearance &lt; 1.2m (Blocked)
+              </div>
+            )}
 
             <div className="paneLiveStats">
               <span>Walking Time: <strong className="bad">02:41</strong></span>

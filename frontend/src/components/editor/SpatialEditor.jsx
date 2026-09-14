@@ -230,16 +230,13 @@ export function SpatialEditor({
         <div className="canvasBottomBar">
           <div className="legendItems">
             <span className="legendItem">
-              <i className="legendDot current" /> Baseline Position
+              <i className="legendDot" style={{ background: "#22D3EE" }} /> Standard Pedestrians
             </span>
             <span className="legendItem">
-              <i className="legendDot proposed" /> Proposed Target
+              <i className="legendDot" style={{ background: "#A855F7" }} /> Wheelchair / Mobility Assisted
             </span>
             <span className="legendItem">
-              <i className="legendDot heatmap" /> Congestion Hotspot
-            </span>
-            <span className="legendItem">
-              <i className="legendDot agent" /> Multi-Agent Flow
+              <i className="legendDot" style={{ background: "#EF4444" }} /> Congestion / Bottleneck Point
             </span>
           </div>
           <DataHonestyBadge text="DETERMINISTIC SIMULATION ACTIVE" />

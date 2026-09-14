@@ -24,6 +24,20 @@ import {
 } from "lucide-react";
 import { AGENT_ARCHETYPES } from "../../data/agentArchetypes";
 
+const roomPalette = {
+  waiting: { fill: "rgba(16, 185, 129, 0.15)", border: "#10B981" },
+  service: { fill: "rgba(2, 132, 199, 0.2)", border: "#0284C7" },
+  emergency: { fill: "rgba(244, 63, 94, 0.2)", border: "#F43F5E" }
+};
+
+function getRoomPalette(obj) {
+  const label = `${obj.name || ""} ${obj.kind || ""}`.toLowerCase();
+  if (label.includes("waiting") || label.includes("lounge")) return roomPalette.waiting;
+  if (label.includes("registration") || label.includes("desk") || label.includes("service")) return roomPalette.service;
+  if (label.includes("emergency") || label.includes("egress") || label.includes("exit") || obj.critical) return roomPalette.emergency;
+  return { fill: "rgba(15, 23, 42, 0.72)", border: "#64748B" };
+}
+
 export function SimulationCanvas({
   environment,
   selectedObject,
@@ -129,6 +143,7 @@ export function SimulationCanvas({
   const triage = objects.find((o) => o.id === "emergency") || { x: 68, y: 57, name: "Emergency Triage Dept" };
 
   const isCongested = proposalPosition.x > 60 || proposalPosition.y > 60;
+  const corridorCompromised = isCongested;
 
   // Heatmap points
   const heatmapData = simulationResult?.heatmap || [
@@ -254,7 +269,55 @@ export function SimulationCanvas({
         }}
       >
         {/* Futuristic Spatial Blueprint Grid */}
-        {showGrid && <div className="spatialGrid" />}
+        {showGrid && (
+          <div
+            className="spatialGrid"
+            style={{
+              backgroundImage: "linear-gradient(to right, rgba(30, 41, 59, 0.55) 1px, transparent 1px), linear-gradient(to bottom, rgba(30, 41, 59, 0.55) 1px, transparent 1px)",
+              backgroundSize: "32px 32px"
+            }}
+          />
+        )}
+
+        <div
+          style={{
+            position: "absolute",
+            right: 22,
+            bottom: 18,
+            zIndex: 48,
+            color: "#CBD5E1",
+            fontFamily: "var(--font-mono)",
+            fontSize: 10,
+            fontWeight: 800,
+            letterSpacing: "0.08em",
+            textShadow: "0 1px 4px #020617"
+          }}
+        >
+          |&mdash; 5m &mdash;|
+        </div>
+
+        <div
+          style={{
+            position: "absolute",
+            left: 18,
+            bottom: 18,
+            zIndex: 48,
+            display: "grid",
+            gap: 5,
+            padding: "9px 11px",
+            color: "#E2E8F0",
+            background: "rgba(2, 6, 23, 0.86)",
+            border: "1px solid rgba(148, 163, 184, 0.35)",
+            fontFamily: "var(--font-mono)",
+            fontSize: 10,
+            lineHeight: 1.2
+          }}
+        >
+          <strong style={{ color: "#F8FAFC", letterSpacing: "0.08em" }}>PERSONA LEGEND</strong>
+          <span><i style={{ color: "#22D3EE", fontStyle: "normal" }}>●</i> Standard Pedestrians</span>
+          <span><i style={{ color: "#A855F7", fontStyle: "normal" }}>●</i> Wheelchair / Mobility Assisted</span>
+          <span><i style={{ color: "#EF4444", fontStyle: "normal" }}>●</i> Congestion / Bottleneck Point</span>
+        </div>
 
         {/* Dynamic Congestion Heatmap Floor Layer */}
         {showHeatmap && (
@@ -285,7 +348,16 @@ export function SimulationCanvas({
                 left: `${obj.x}%`,
                 top: `${obj.y}%`,
                 width: `${obj.w}%`,
-                height: `${obj.h}%`
+                height: `${obj.h}%`,
+                background: getRoomPalette(obj).fill,
+                border: `1.5px solid ${getRoomPalette(obj).border}`,
+                borderRadius: 0,
+                boxShadow: corridorCompromised && getRoomPalette(obj) === roomPalette.emergency
+                  ? "0 0 0 1px #EF4444, 0 0 18px rgba(239, 68, 68, 0.75)"
+                  : "none",
+                animation: corridorCompromised && getRoomPalette(obj) === roomPalette.emergency
+                  ? "pulseGlow 1.5s ease-in-out infinite"
+                  : "none"
               }}
               onClick={(e) => e.stopPropagation()}
             >
@@ -297,9 +369,44 @@ export function SimulationCanvas({
               <div className="objFootprintPill">
                 <span>{obj.w}×{obj.h}m &bull; Cap: {obj.capacity || 40}</span>
               </div>
+              <span
+                aria-hidden="true"
+                style={{
+                  position: "absolute",
+                  right: -5,
+                  top: "50%",
+                  width: 10,
+                  height: 7,
+                  transform: "translateY(-50%)",
+                  background: "#020617",
+                  borderTop: `1.5px solid ${getRoomPalette(obj).border}`,
+                  borderBottom: `1.5px solid ${getRoomPalette(obj).border}`
+                }}
+              />
             </div>
           );
         })}
+
+        {corridorCompromised && (
+          <div
+            style={{
+              position: "absolute",
+              right: 20,
+              top: 58,
+              zIndex: 56,
+              padding: "7px 10px",
+              color: "#FCA5A5",
+              background: "rgba(69, 10, 10, 0.92)",
+              border: "1px solid #EF4444",
+              boxShadow: "0 0 14px rgba(239, 68, 68, 0.45)",
+              fontFamily: "var(--font-mono)",
+              fontSize: 10,
+              fontWeight: 800
+            }}
+          >
+            Corridor Clearance &lt; 1.2m (Blocked)
+          </div>
+        )}
 
         {/* Clean Glowing SVG Path Ribbons */}
         {showRoutes && (
