@@ -94,7 +94,7 @@ export function DecisionReportView({
             <FileText size={14} />
             <span>EXECUTIVE DECISION REPORT</span>
           </div>
-          <h2>Spatial Impact Assessment Document</h2>
+          <h2>Spatial Impact Analysis</h2>
         </div>
 
         <div className="reportButtonRow">

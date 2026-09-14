@@ -17040,6 +17040,72 @@ a {
   border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
+/* Batch 1 readability and card boundaries */
+:root,
+[data-theme="cyber-cyan"],
+[data-theme="emerald-matrix"],
+[data-theme="obsidian-violet"],
+[data-theme="solar-amber"],
+[data-theme="crimson-apex"],
+[data-theme="titanium-ice"],
+[data-theme="oled-black"],
+[data-theme="cad-blueprint"] {
+  --text-muted: #cbd5e1;
+  --text-dim: #94a3b8;
+}
+
+.worldPortalCard,
+.decisionVerdictCard,
+.dMetricCard,
+.dCard,
+.altOptionCard,
+.reportTopActions,
+.reportDocument,
+.worldWhatIfBox {
+  border-color: rgba(51, 65, 85, 0.6);
+}
+
+.worldPortalCard.opacity-75 {
+  opacity: 0.75;
+}
+
+.worldComingSoonBadge {
+  padding: 3px 8px;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  border-radius: 4px;
+  color: #94a3b8;
+  background: rgba(71, 85, 105, 0.2);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.worldEnterBtn.comingSoon,
+.worldEnterBtn:disabled {
+  cursor: not-allowed;
+  color: #94a3b8;
+  border-color: rgba(71, 85, 105, 0.7);
+  background: rgba(51, 65, 85, 0.35);
+  box-shadow: none;
+}
+
+.worldCardScale,
+.reportSubDesc,
+.weightsSubtitle,
+.docMeta,
+.docContextGrid small,
+.dMetricLabel,
+.dCardHead .headSub {
+  color: #94a3b8;
+}
+
+.worldCardSummary,
+.dCardText,
+.dataHonestyFooterBox p {
+  color: #cbd5e1;
+}
+
 .worldSupportedPills {
   display: flex;
   flex-wrap: wrap;

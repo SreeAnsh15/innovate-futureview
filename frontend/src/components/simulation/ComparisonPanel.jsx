@@ -113,7 +113,7 @@ export function ComparisonPanel({
         </div>
       </div>
 
-      {/* 2. Autonomous Pareto Layout Optimizer */}
+      {/* 2. Layout Optimization Engine */}
       <div className="paretoSectionCard">
         <div className="paretoCardHeader">
           <div className="paretoTitleWrap">

@@ -84,12 +84,12 @@ export function WorldsLibraryView({ setTab }) {
         {UNIVERSAL_WORLDS.map((world) => {
           const Icon = WORLD_ICONS[world.id] || Compass;
           const accentColor = WORLD_ACCENTS[world.id] || "#38bdf8";
-          const isCurrentActive = activeWorld?.id === world.id;
+          const isActiveWorld = world.id === "hospital-demo";
 
           return (
             <div
               key={world.id}
-              className={`worldPortalCard ${isCurrentActive ? "active" : ""}`}
+              className={`worldPortalCard ${isActiveWorld ? "active" : "opacity-75"}`}
               style={{ "--world-accent": accentColor }}
             >
               {/* Card Header */}
@@ -99,7 +99,11 @@ export function WorldsLibraryView({ setTab }) {
                 </div>
                 <div className="worldBadgeGroup">
                   <span className="worldTypeBadge">{world.type}</span>
-                  {isCurrentActive && <span className="worldActiveDot">ACTIVE</span>}
+                  {isActiveWorld ? (
+                    <span className="worldActiveDot">ACTIVE</span>
+                  ) : (
+                    <span className="worldComingSoonBadge">Blueprint Preset &middot; Coming Soon</span>
+                  )}
                 </div>
               </div>
 
@@ -125,10 +129,11 @@ export function WorldsLibraryView({ setTab }) {
                 </div>
 
                 <button
-                  className={`worldEnterBtn ${isCurrentActive ? "active" : ""}`}
+                  className={`worldEnterBtn ${isActiveWorld ? "active" : "comingSoon"}`}
                   onClick={() => handleEnterWorld(world)}
+                  disabled={!isActiveWorld}
                 >
-                  <span>{isCurrentActive ? "EXPERIMENT NOW" : "ENTER WORLD"}</span>
+                  <span>{isActiveWorld ? "EXPERIMENT NOW" : "Preview Only (Coming Soon)"}</span>
                   <ArrowRight size={13} />
                 </button>
               </div>

@@ -77,7 +77,7 @@ export function CausalCascadeGraph({ cascadeData = null, whatBreaksFirst = null,
             <GitCommit size={14} />
             <span>CAUSAL GRAPH & CASCADING CONSEQUENCES</span>
           </div>
-          <h3 className="cascadeTitle">Autonomous Causal Propagation Graph</h3>
+          <h3 className="cascadeTitle">System Failure &amp; Bottleneck Cascade</h3>
           <span className="cascadeSubtitle">
             Deterministic cascade tracking from initial trigger to multi-order systemic consequences.
           </span>

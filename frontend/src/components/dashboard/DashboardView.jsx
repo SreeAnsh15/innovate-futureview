@@ -264,7 +264,7 @@ export function DashboardView({ setTab }) {
       <section className="heroMissionSection">
         <div className="heroMottoBadge">
           <Sparkles size={13} className="heroSparkleIcon" />
-          <span>COUNTERFACTUAL INTELLIGENCE FOR THE REAL WORLD</span>
+          <span>WHAT-IF LAYOUT SIMULATION FOR THE REAL WORLD</span>
         </div>
 
         <h1 className="heroMasterHeadline">
@@ -273,7 +273,7 @@ export function DashboardView({ setTab }) {
         </h1>
 
         <p className="heroMasterSubtitle">
-          Understand the present. Simulate alternative futures. Discover what breaks first. Test deterministic interventions before reality pays the price.
+          Simulate layout modifications, detect emergency exit bottlenecks, and evaluate pedestrian flow before construction.
         </p>
       </section>
 
@@ -387,7 +387,7 @@ export function DashboardView({ setTab }) {
       <section className="consequenceSplitSection">
         <div className="splitSectionHeader">
           <div className="splitHeaderTitle">
-            <span className="splitSub">CAUSAL MORPHOLOGY</span>
+            <span className="splitSub">SPATIAL IMPACT ANALYSIS</span>
             <h2 className="splitMainTitle">Current Baseline vs. Counterfactual Future</h2>
           </div>
           <span className="splitMotto">See physical deltas across all velocity & pressure vectors</span>
@@ -511,10 +511,10 @@ export function DashboardView({ setTab }) {
       <section className="betterFuturesSection">
         <div className="betterFuturesBanner">
           <div className="betterFuturesLeft">
-            <span className="betterTag">AUTONOMOUS OPTIMIZER</span>
+            <span className="betterTag">LAYOUT OPTIMIZATION ENGINE</span>
             <h2 className="betterHeading">This Future Has Severe Bottlenecks.</h2>
             <p className="betterSubtext">
-              FUTUREVIEW evaluated deterministic Pareto interventions across layout re-engineering, queue rebalancing, and capacity scheduling.
+              FUTUREVIEW evaluated layout options across re-engineering, queue rebalancing, and capacity scheduling.
             </p>
           </div>
           <button
@@ -522,7 +522,7 @@ export function DashboardView({ setTab }) {
             onClick={() => setTab("scenario_compare")}
           >
             <Sparkles size={14} />
-            <span>FIND A BETTER FUTURE (PARETO OPTIMIZER)</span>
+            <span>OPEN LAYOUT OPTIMIZATION ENGINE</span>
           </button>
         </div>
 

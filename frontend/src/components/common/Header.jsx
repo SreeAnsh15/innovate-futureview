@@ -168,10 +168,10 @@ export function Header({ onOpenJuryDemo, onOpenWowScreen }) {
 
       {/* Right: Engine Status, Time Travel, Language, & Jury Demo */}
       <div className="headerRightSection">
-        {/* Real-time Deterministic Engine Pulse */}
+        {/* Real-time engine status */}
         <div className="engineStatusCapsule">
           <Activity size={12} className="engineLivePulse" />
-          <span>ENGINE: <strong>DETERMINISTIC 60FPS</strong></span>
+          <span>ENGINE: <strong>REAL-TIME 60FPS</strong></span>
         </div>
 
         {/* Light / Dark Mode */}

@@ -104,7 +104,7 @@ export default function JuryDemoModal({ isOpen, onClose }) {
             </div>
             <div>
               <b className="juryHeaderTitle">FUTUREVIEW &bull; JURY PRESENTATION</b>
-              <span className="juryHeaderSub">Counterfactual Intelligence Platform Demonstration</span>
+              <span className="juryHeaderSub">What-If Layout Simulation Demonstration</span>
             </div>
           </div>
           <button className="juryCloseBtn" onClick={onClose}>

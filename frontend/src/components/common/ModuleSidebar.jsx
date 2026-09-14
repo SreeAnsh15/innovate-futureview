@@ -110,7 +110,7 @@ export function ModuleSidebar() {
         </div>
         <div className="sidebarBrandMeta">
           <b className="sidebarBrandName">FUTUREVIEW</b>
-          <span className="sidebarTagline">Counterfactual Intelligence</span>
+          <span className="sidebarTagline">What-If Layout Simulation</span>
         </div>
       </div>
 
