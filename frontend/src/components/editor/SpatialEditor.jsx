@@ -21,6 +21,7 @@ import {
   Upload,
   TrendingUp,
   BrainCircuit,
+  ChevronLeft,
   ChevronRight,
   ChevronDown,
   ShieldCheck,
@@ -68,6 +69,7 @@ export function SpatialEditor({
 
   const [activeControlTab, setActiveControlTab] = useState("controls"); // "controls" | "upload" | "layers"
   const [showRightTelemetry, setShowRightTelemetry] = useState(true);
+  const [isLeftSidebarCollapsed, setIsLeftSidebarCollapsed] = useState(false);
 
   const objects = currentWorld?.objects || [];
   const selectedObject =
@@ -77,9 +79,25 @@ export function SpatialEditor({
     objects[0];
 
   return (
-    <div className="spatialEditorWorkspace">
+    <div
+      className={`spatialEditorWorkspace ${isLeftSidebarCollapsed ? "leftSidebarCollapsed" : ""}`}
+      style={{
+        gridTemplateColumns: `${isLeftSidebarCollapsed ? "56px" : "310px"} minmax(0, 1fr) ${showRightTelemetry ? "340px" : "0px"}`
+      }}
+    >
       {/* 1. Left Controls Rail */}
-      <aside className="editorSidebar leftSidebar">
+      <aside className={`editorSidebar leftSidebar ${isLeftSidebarCollapsed ? "collapsed" : ""}`}>
+        <button
+          className="sidebarCollapseToggle"
+          type="button"
+          onClick={() => setIsLeftSidebarCollapsed((collapsed) => !collapsed)}
+          aria-label={isLeftSidebarCollapsed ? "Expand target element sidebar" : "Collapse target element sidebar"}
+          title={isLeftSidebarCollapsed ? "Expand target element sidebar" : "Collapse target element sidebar"}
+        >
+          {isLeftSidebarCollapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
+        </button>
+        {!isLeftSidebarCollapsed && (
+          <>
         {/* Active Space Summary Card */}
         <div className="envActiveCard">
           <div className="envCardIcon">
@@ -177,6 +195,8 @@ export function SpatialEditor({
               setShowGrid={setShowGrid}
             />
           </div>
+        )}
+          </>
         )}
       </aside>
 

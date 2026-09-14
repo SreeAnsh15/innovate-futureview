@@ -7,6 +7,7 @@ export function MetricCard({
   proposed,
   delta,
   deltaPct,
+  deltaLabel,
   unit = "",
   status = "neutral",
   description
@@ -21,7 +22,10 @@ export function MetricCard({
       {/* Top Header: Title & Delta Badge */}
       <div className="fvMetricTop">
         <span className="fvMetricTitle">{title}</span>
-        <div className={`fvDeltaBadge ${status}`}>
+        <div
+          className={`fvDeltaBadge ${status}`}
+          style={deltaLabel ? { color: "#FBBF24", fontWeight: 800 } : undefined}
+        >
           {isNeutral ? (
             <Minus size={11} />
           ) : isPositive ? (
@@ -30,9 +34,9 @@ export function MetricCard({
             <ArrowDownRight size={11} />
           )}
           <span>
-            {deltaPct !== undefined && deltaPct !== 0
+            {deltaLabel || (deltaPct !== undefined && deltaPct !== 0
               ? `${deltaPct > 0 ? "+" : ""}${deltaPct}%`
-              : `${delta > 0 ? "+" : ""}${delta}${unit}`}
+              : `${delta > 0 ? "+" : ""}${delta}${unit}`)}
           </span>
         </div>
       </div>

@@ -352,6 +352,8 @@ export function SimulationCanvas({
                 background: getRoomPalette(obj).fill,
                 border: `1.5px solid ${getRoomPalette(obj).border}`,
                 borderRadius: 0,
+                zIndex: obj.kind === "corridor" ? 20 : 30,
+                overflow: "visible",
                 boxShadow: corridorCompromised && getRoomPalette(obj) === roomPalette.emergency
                   ? "0 0 0 1px #EF4444, 0 0 18px rgba(239, 68, 68, 0.75)"
                   : "none",
@@ -365,7 +367,28 @@ export function SimulationCanvas({
                 <span className="objKindTag">{obj.kind?.toUpperCase()}</span>
                 {obj.critical && <span className="objCriticalDot" />}
               </div>
-              {showLabels && <span className="objLabel">{obj.name}</span>}
+              {showLabels && (
+                <span
+                  className="objLabel"
+                  style={{
+                    position: "relative",
+                    zIndex: 30,
+                    display: "inline-block",
+                    maxWidth: "calc(100% - 12px)",
+                    margin: "3px 6px",
+                    padding: "3px 6px",
+                    color: "#F8FAFC",
+                    background: "#0F172A",
+                    border: "1px solid #334155",
+                    borderRadius: 4,
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis"
+                  }}
+                >
+                  {obj.name}
+                </span>
+              )}
               <div className="objFootprintPill">
                 <span>{obj.w}×{obj.h}m &bull; Cap: {obj.capacity || 40}</span>
               </div>

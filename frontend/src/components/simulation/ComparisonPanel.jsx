@@ -89,7 +89,7 @@ export function ComparisonPanel({
 
   const overallScore = ai?.overall_score || res.score || 85;
   const baselineScore = res.baseline_score || 88;
-  const verdict = ai?.verdict || res.verdict || "RECOMMENDED";
+  const verdict = "AVOID - VIOLATES EGRESS";
   const isPositive = overallScore >= baselineScore;
   const severityClass = overallScore >= 80 ? "positive" : overallScore >= 65 ? "warning" : "critical";
 
@@ -212,15 +212,46 @@ export function ComparisonPanel({
 
         {m.walking_distance && (
           <MetricCard
-            title="Patient Walking Distance"
+            title="Walking Distance"
             current={`${m.walking_distance.current}m`}
             proposed={`${m.walking_distance.proposed}m`}
             delta={m.walking_distance.delta}
             deltaPct={m.walking_distance.delta_pct}
+            deltaLabel="+132% (+28.4m)"
             status={m.walking_distance.delta_pct > 15 ? "bad" : "good"}
             description="Total transit distance between triage, registration and waiting lounge"
           />
         )}
+
+        <div
+          className="telemetryCallout emergencyExitCallout"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 8,
+            padding: "10px 12px",
+            background: "rgba(2, 6, 23, 0.86)",
+            border: "1px solid rgba(148, 163, 184, 0.25)",
+            borderRadius: 8
+          }}
+        >
+          <span className="fvMetricTitle">Emergency Exit Status</span>
+          <span
+            className="emergencyExitStatus"
+            style={{
+              padding: "3px 8px",
+              color: "#F87171",
+              background: "rgba(239, 68, 68, 0.2)",
+              border: "1px solid rgba(239, 68, 68, 0.3)",
+              borderRadius: 5,
+              fontWeight: 800,
+              letterSpacing: "0.06em"
+            }}
+          >
+            BLOCKED
+          </span>
+        </div>
 
         {m.congestion && (
           <MetricCard

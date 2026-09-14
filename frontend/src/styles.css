@@ -39,7 +39,7 @@
   --violet-glow: rgba(129, 140, 248, 0.28);
   --green: #10b981;
   --green-glow: rgba(16, 185, 129, 0.28);
-  --amber: #f59e0b;
+  --amber: #f43f5e;
   --amber-glow: rgba(245, 158, 11, 0.28);
   --red: #f43f5e;
   --red-glow: rgba(244, 63, 94, 0.35);
@@ -11967,6 +11967,34 @@ a {
 
 .leftSidebar {
   border-right: 1px solid var(--border);
+  position: relative;
+  min-width: 0;
+}
+
+.leftSidebar.collapsed {
+  align-items: center;
+  padding: 12px 8px;
+  overflow: hidden;
+}
+
+.sidebarCollapseToggle {
+  position: absolute;
+  top: 12px;
+  right: 10px;
+  z-index: 30;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  color: var(--cyan-bright);
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.leftSidebar.collapsed .sidebarCollapseToggle {
+  position: static;
 }
 
 .rightSidebar {
@@ -17152,6 +17180,147 @@ a {
 }
 
 /* ==========================================================================
+   INDUSTRIAL CAD & OPERATIONS SYSTEM
+   Keep the legacy theme hooks for compatibility, but use one restrained
+   surface and interaction language across all dark operating modes.
+   ========================================================================== */
+:root,
+[data-theme="cyber-cyan"],
+[data-theme="emerald-matrix"],
+[data-theme="obsidian-violet"],
+[data-theme="solar-amber"],
+[data-theme="crimson-apex"],
+[data-theme="titanium-ice"],
+[data-theme="oled-black"],
+[data-theme="cad-blueprint"],
+[data-theme="high-contrast"],
+[data-theme="night-vision"],
+[data-theme="neon-synth"] {
+  --bg: #0b0f19;
+  --bg-darker: #090d16;
+  --bg-elevated: #111827;
+  --panel: #111827;
+  --panel-card: #131b2e;
+  --panel-glass: rgba(17, 24, 39, 0.96);
+  --panel-hover: #1e293b;
+  --panel-active: #24344d;
+
+  --border: rgba(148, 163, 184, 0.22);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-active: #0ea5e9;
+  --border-glow: rgba(255, 255, 255, 0.08);
+
+  --text: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-dim: #94a3b8;
+  --text-inverse: #0b0f19;
+
+  --cyan: #0284c7;
+  --cyan-bright: #0ea5e9;
+  --cyan-glow: transparent;
+  --blue: #0ea5e9;
+  --blue-glow: transparent;
+  --violet: #64748b;
+  --violet-glow: transparent;
+  --green: #10b981;
+  --green-glow: transparent;
+  --amber: #f59e0b;
+  --amber-glow: transparent;
+  --red: #f43f5e;
+  --red-glow: transparent;
+
+  --radius-xs: 3px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 6px;
+  --radius-xl: 6px;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.24);
+  --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.28);
+  --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.32);
+  --shadow-glow: none;
+  --shadow-glow-active: none;
+}
+
+/* Cards and controls use crisp separation rather than atmospheric elevation. */
+button,
+[class*="Card"],
+[class*="card"],
+[class*="Panel"],
+[class*="panel"],
+[class*="Btn"],
+[class*="Button"],
+[class*="btn"],
+[class*="button"] {
+  text-shadow: none !important;
+  box-shadow: none !important;
+}
+
+/* Tailwind utility classes used by shared surfaces should match the system geometry. */
+.rounded-2xl,
+.rounded-3xl,
+.rounded-xl {
+  border-radius: 6px !important;
+}
+
+/* Normalize legacy glow effects while retaining a small, functional focus ring. */
+*:not(:focus-visible) {
+  text-shadow: none;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #0ea5e9;
+  outline-offset: 2px;
+  box-shadow: none !important;
+}
+
+.app,
+.workspaceCanvas {
+  background: var(--bg);
+}
+
+[style*="box-shadow"] {
+  box-shadow: none !important;
+}
+
+/* Status tints are intentionally quiet and remain legible on slate surfaces. */
+.badgeRed,
+.badgeAmber,
+.badgeCritical,
+.paneBadge.baseline,
+.playing {
+  background: rgba(244, 63, 94, 0.1) !important;
+  border-color: rgba(244, 63, 94, 0.7) !important;
+}
+
+.badgeGreen,
+.badgePositive,
+.recommended {
+  background: rgba(16, 185, 129, 0.1) !important;
+  border-color: rgba(16, 185, 129, 0.7) !important;
+}
+
+.metricCardVal,
+.moduleMetricValue,
+.flowBarVal,
+.paneScore,
+.scoreValue,
+.metricValue,
+.latencyValue,
+.coordinateValue,
+[class*="metric"] strong,
+[class*="Metric"] strong,
+[class*="score"] strong,
+[class*="Score"] strong {
+  font-family: var(--font-mono);
+}
+
+/* ==========================================================================
    05. SPLIT-SCREEN COMPARISON STYLES
    ========================================================================== */
 .splitScreenPage {
@@ -17955,11 +18124,35 @@ a {
   gap: 10px;
 }
 
+/* Final surface pass: this follows all legacy component declarations. */
+button,
+[class*="Card"],
+[class*="card"],
+[class*="Panel"],
+[class*="panel"],
+[class*="Btn"],
+[class*="Button"],
+[class*="btn"],
+[class*="button"] {
+  text-shadow: none !important;
+  box-shadow: none !important;
+}
 
+.rounded-2xl,
+.rounded-3xl,
+.rounded-xl {
+  border-radius: 6px !important;
+}
 
-
-
-
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #0ea5e9;
+  outline-offset: 2px;
+  box-shadow: none !important;
+}
 
 
 

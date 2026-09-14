@@ -36,7 +36,15 @@ export function PropertyPanel({
         </div>
         <h4 className="propNodeTitle">{selectedObject.name}</h4>
         <div className="propKindBadge">
-          <span className={`propTag ${selectedObject.kind}`}>
+          <span
+            className={`propTag ${selectedObject.kind}`}
+            style={{
+              position: "relative",
+              zIndex: 20,
+              background: "#0F172A",
+              border: "1px solid #334155"
+            }}
+          >
             {kindLabels[selectedObject.kind] || selectedObject.kind.toUpperCase()}
           </span>
           {selectedObject.movable !== false ? (
