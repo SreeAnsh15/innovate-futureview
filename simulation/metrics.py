@@ -18,6 +18,9 @@ PERSONA_DISTANCE_WEIGHTS = {
     "wheelchair": 1.0 / 3.0,
 }
 
+BASELINE_ENTRANCE_ID = "door_main_entrance"
+BASELINE_REGISTRATION_DESK_ID = "desk_registration"
+
 WHEELCHAIR_CLEARANCE_M = 1.2
 # Distances at/under GOOD map to 100; at/over BAD map to 0.
 WALK_GOOD_M, WALK_BAD_M = 5.0, 20.0
@@ -271,7 +274,12 @@ def overall_weighted_score(
 def compute_metrics(grid: OccupancyGrid) -> dict[str, Any]:
     """Run persona pathfinding and return the full metric bundle for a layout."""
     persona_results = {
-        result.persona: result for result in run_all_personas(occupancy=grid)
+        result.persona: result
+        for result in run_all_personas(
+            occupancy=grid,
+            start_id=BASELINE_ENTRANCE_ID,
+            goal_id=BASELINE_REGISTRATION_DESK_ID,
+        )
     }
     walk_m = average_walking_distance(persona_results)
     congestion = congestion_index(grid, persona_results)

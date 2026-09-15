@@ -2,35 +2,36 @@
 
 from __future__ import annotations
 
-import copy
 import json
 from typing import Any
 
 try:
     from .grid import OccupancyGrid, load_baseline
     from .metrics import compute_metrics
+    from .domain import Position, SpatialWorld
 except ImportError:  # python simulation/scenario.py
     from grid import OccupancyGrid, load_baseline
     from metrics import compute_metrics
+    from domain import Position, SpatialWorld
 
 BAD_DESK_POS = {"x": 2.0, "z": 7.0}
 
 
-def _with_desk_position(layout: dict[str, Any], desk_pos: dict[str, float]) -> dict[str, Any]:
-    updated = copy.deepcopy(layout)
-    for item in updated.get("service_points", []):
-        if item.get("id") != "desk_registration":
+def _with_desk_position(world: SpatialWorld, desk_pos: dict[str, float]) -> SpatialWorld:
+    """Apply the retained hospital-only scenario to a copy of the world."""
+
+    updated = world.model_copy(deep=True)
+    for item in updated.objects:
+        if item.id != "desk_registration":
             continue
-        position = item.setdefault("position", {"x": 0.0, "y": 0.0, "z": 0.0})
-        if "x" in desk_pos:
-            position["x"] = float(desk_pos["x"])
-        if "y" in desk_pos:
-            position["y"] = float(desk_pos["y"])
-        if "z" in desk_pos:
-            position["z"] = float(desk_pos["z"])
+        item.position = Position(
+            x=float(desk_pos.get("x", item.position.x)),
+            y=float(desk_pos.get("y", item.position.y)),
+            z=float(desk_pos.get("z", item.position.z)),
+        )
         break
     else:
-        raise KeyError("Layout is missing service point 'desk_registration'")
+        raise KeyError("World is missing scenario object 'desk_registration'")
     return updated
 
 
@@ -133,8 +134,8 @@ def evaluate_layout(
     if modified_desk_pos is None:
         return baseline_public
 
-    proposed_layout = _with_desk_position(baseline_grid.layout, modified_desk_pos)
-    proposed_grid = OccupancyGrid(proposed_layout)
+    proposed_world = _with_desk_position(baseline_grid.world, modified_desk_pos)
+    proposed_grid = OccupancyGrid(proposed_world)
     proposed_bundle = compute_metrics(proposed_grid)
     proposed_public = _public_metrics(proposed_bundle)
 

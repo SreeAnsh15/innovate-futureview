@@ -1,4 +1,4 @@
-"""A* pathfinding over the hospital occupancy grid with agent personas."""
+"""Deterministic A* pathfinding over a derived occupancy grid."""
 
 from __future__ import annotations
 
@@ -8,9 +8,9 @@ from dataclasses import dataclass
 from typing import Iterable
 
 try:
-    from .grid import OccupancyGrid, load_baseline
+    from .grid import OccupancyGrid
 except ImportError:  # python simulation/pathfinder.py
-    from grid import OccupancyGrid, load_baseline
+    from grid import OccupancyGrid
 
 PERSONAS: dict[str, dict[str, float]] = {
     "normal": {"speed": 1.2, "clearance": 0.0},
@@ -117,17 +117,23 @@ def _polyline_length(points: Iterable[tuple[float, float]]) -> float:
 
 
 def find_path(
+    *,
+    occupancy: OccupancyGrid,
+    start_id: str,
+    goal_id: str,
     persona: str = "normal",
-    start_id: str = "door_main_entrance",
-    goal_id: str = "desk_registration",
-    occupancy: OccupancyGrid | None = None,
 ) -> PathResult:
+    """Route between semantic world anchors using an already-derived grid.
+
+    Loading and layout interpretation deliberately sit outside this navigation
+    boundary. Callers supply the navigation representation and anchor IDs.
+    """
+
     if persona not in PERSONAS:
         raise KeyError(f"Unknown persona '{persona}'. Expected one of {list(PERSONAS)}")
 
     spec = PERSONAS[persona]
-    base = occupancy or load_baseline()
-    grid = base.inflated(spec["clearance"]) if spec["clearance"] > 0.0 else base
+    grid = occupancy.inflated(spec["clearance"]) if spec["clearance"] > 0.0 else occupancy
 
     sx, sz = grid.find_object_position(start_id)
     gx, gz = grid.find_object_position(goal_id)
@@ -154,13 +160,18 @@ def find_path(
 
 
 def run_all_personas(
-    occupancy: OccupancyGrid | None = None,
-    start_id: str = "door_main_entrance",
-    goal_id: str = "desk_registration",
+    *,
+    occupancy: OccupancyGrid,
+    start_id: str,
+    goal_id: str,
 ) -> list[PathResult]:
-    occupancy = occupancy or load_baseline()
     return [
-        find_path(name, start_id=start_id, goal_id=goal_id, occupancy=occupancy)
+        find_path(
+            persona=name,
+            start_id=start_id,
+            goal_id=goal_id,
+            occupancy=occupancy,
+        )
         for name in PERSONAS
     ]
 
@@ -181,9 +192,19 @@ def _print_result(result: PathResult) -> None:
 
 
 if __name__ == "__main__":
+    try:
+        from .grid import load_baseline
+    except ImportError:  # python simulation/pathfinder.py
+        from grid import load_baseline
+
+    baseline = load_baseline()
     print("FUTUREVIEW path simulation: door_main_entrance -> desk_registration")
     print(f"personas={list(PERSONAS)}")
     print()
-    for result in run_all_personas():
+    for result in run_all_personas(
+        occupancy=baseline,
+        start_id="door_main_entrance",
+        goal_id="desk_registration",
+    ):
         _print_result(result)
         print()
